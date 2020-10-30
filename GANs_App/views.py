@@ -29,7 +29,7 @@ from tensorflow.random import normal
 from tensorflow import cast, uint8
 from tensorflow.keras.models import load_model
 from PIL import Image
-import io, base64
+import io, base64 
 
 #######################################
 ## Necessary Functions
