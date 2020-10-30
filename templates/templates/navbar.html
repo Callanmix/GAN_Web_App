@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <a class="navbar-brand" href="/">GANs</a>
+  
+    <div class="collapse navbar-collapse">
+
+      <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin Page</a>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <ul class="navbar-nav mr-auto">
+
+      {% if user.is_authenticated %}
+
+        <li class="nav-item">
+          <a class="nav-link">Hello, {{ user.username|title }}</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+
+      {% else %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Sign Up</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>  
+        
+      {% endif %}
+
+    </ul>
+
+  </nav>

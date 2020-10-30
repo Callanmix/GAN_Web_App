@@ -1,0 +1,1 @@
+web: gunicorn GANs_Project.wsgi --log-file -

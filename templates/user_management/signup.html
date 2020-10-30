@@ -1,0 +1,31 @@
+{% extends 'templates\base.html' %}
+
+{% block content %}
+    {% include 'templates\navbar.html' %}
+    <div style="height: 100px;"></div>
+
+    <div class="contatiner">
+        <div class="row justify-content-md-center">
+            <div class="col-md-6">
+                <h2>Sign up</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 1000px;"></div>
+
+    <script>
+        $(function () {
+            $('.datepicker').datetimepicker({
+                format:'YYYY-MM-DD'
+            });
+        });
+    </script>
+    
+    {% include 'templates\footer.html' %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'templates\base.html' %}
+
+    {% block content %}
+
+        {% include 'templates\navbar.html' %}
+
+        <div style="height: 100px;"></div>
+
+        <div class="contatiner">
+            <div class="row justify-content-md-center">
+                <div class="col-md-6">
+                    <div class="container">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                            <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
+                        </form>
+                        Don't have an account? <a href="/signup"><strong>Register Here</strong></a>!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="height: 8000px;"></div>
+
+    {% include 'templates\footer.html' %}
+{% endblock %}

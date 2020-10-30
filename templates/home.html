@@ -1,0 +1,32 @@
+{% extends 'templates\base.html' %}
+
+{% block content %}
+    {% include 'templates\navbar.html' %}
+
+    <div style="text-align: center;">
+
+        <h1>This is the Home Page</h1>
+
+        <h3>Welcome</h3>
+
+        <p>
+            {% if user.is_authenticated %}
+                <h2>{{ user.username|title }}</h2>
+                <p>{{ user.profile.email_address }}</p>
+                <p>{{ user.profile.bio }}</p>
+                <p>{{ user.profile.location }}</p>
+                <p>{{ user.profile.birth_date }}</p>
+            {% endif %}
+        </p>
+
+    </div>
+
+    <div class="container text-center">
+        <a href="car_horse_gen/">
+            <button type="button" class="btn btn-primary btn-lg">Get Generated Car and Horse Pictures</button>
+        </a>
+    </div>
+
+    <div style="height: 1000px;"></div>
+    {% include 'templates\footer.html' %}
+{% endblock %}
