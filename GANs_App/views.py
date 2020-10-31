@@ -8,12 +8,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib import messages
 
-# forms
-from .forms import SignUpForm
+## forms
+from .forms import SignUpForm, image_upload_form
+
+## Models
+from django.contrib.auth.models import User
+from .models import Uploaded_Images, Profile, MLAlgorithm
 
 ## Non Django Stuff
 import os, logging
@@ -31,6 +34,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import io, base64 
 
+
 #######################################
 ## Necessary Functions
 ######################################
@@ -45,7 +49,7 @@ model = load_model(gen_path)
 ######################################
 ### Create your views here.
 ######################################
-def home_view(request, *args, **kwargs):
+def home_view(request, *args, **kwargs): ## for the home page
 
     my_context = {
         'image': 'Hi'
@@ -53,13 +57,32 @@ def home_view(request, *args, **kwargs):
 
     return render(request, "home.html", my_context)
 
+def image_upload_view(request, *args, **kwargs): ## for the home page
+    if request.method == 'POST':
+        form = image_upload_form(request.POST, request.FILES)
+        if form.is_valid():
+            # Get User
+            image = form.save()
+            image.refresh_from_db()  # load the profile instance created by the signal
+            image.uploaded_by = str(request.user)
+            image.save()
+            return redirect('home')
+    else:
+        form = image_upload_form()
+    my_context = {
+        'form': form
+    }
+    return render(request, "upload_image.html", my_context)
 
-def car_horse_generator_view(request, *args, **kwargs):
+
+
+def car_horse_generator_view(request, *args, **kwargs): # test of car horse generator
     ## Use model to generate new image from random inputs
     img = cast(undo_preprocess(model(normal((1,100)), training = False)[0]), uint8)
     img = img.numpy()
     ## Convert array to jpeg
     img = Image.fromarray(img)      # Image object
+    img = img.resize((400,400))
     buf = io.BytesIO()              # Creat temp folder
     img.save(buf, format='JPEG')    # Save in that folder
     byte_im = buf.getvalue()        # Get Out of folder
@@ -70,6 +93,8 @@ def car_horse_generator_view(request, *args, **kwargs):
         'image': img
     }
     return render(request, "car_horse.html", my_context)
+
+
 
 
 ##########################################
@@ -84,8 +109,6 @@ def signup(request):
             user.refresh_from_db()  # load the profile instance created by the signal
             user.profile.birth_date = form.cleaned_data.get('birth_date')
             user.save()
-
-            print(dir(user.profile))
 
             # Log in
             raw_password = form.cleaned_data.get('password1')

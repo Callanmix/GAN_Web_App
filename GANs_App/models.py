@@ -25,11 +25,19 @@ class MLAlgorithm(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
 
+class Uploaded_Images(models.Model):
+    description = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='media/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_by = models.CharField(max_length=100, null=True, blank=True)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

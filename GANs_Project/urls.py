@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 from GANs_App import views
 
@@ -24,9 +26,10 @@ urlpatterns = [
     path('admin/', admin.site.urls), #admin page
     
     path("car_horse_gen/", views.car_horse_generator_view, name="CarHorse"), # Test of Car Horse Generator
+    path("upload_image/", views.image_upload_view, name="image_upload"), # Uploading Images to change
 
     path('signup/', views.signup), # signup page
     path("logout/", views.logout_request, name="logout"), # logout 
     path("login/", views.login_request, name="login"), # login
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 

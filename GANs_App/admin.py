@@ -2,6 +2,6 @@ from django.contrib import admin
 
 
 # Register your models here.
-from .models import MLAlgorithm, Profile
+from .models import MLAlgorithm, Profile, Uploaded_Images
 
-admin.site.register([MLAlgorithm, Profile])
+admin.site.register([MLAlgorithm, Profile, Uploaded_Images])
