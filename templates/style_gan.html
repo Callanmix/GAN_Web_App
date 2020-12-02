@@ -1,0 +1,27 @@
+{% extends 'templates\base.html' %}
+
+{% block content %}
+    {% include 'templates\navbar.html' %}
+
+    <div style="height: 100px;"></div>
+
+    <div class="container text-center">
+
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <img src="data:image/png;base64,{{ old_image }}" 
+                width="500" height="500" 
+                alt="Random Picture" class="img-fluid rounded shadow-lg p-4 mb-4 bg-light">
+            </div>
+            <div class="col">
+                <img src="data:image/png;base64,{{ new_image }}" 
+                width="500" height="500" 
+                alt="Random Picture" class="img-fluid rounded shadow-lg p-4 mb-4 bg-light">
+            </div>
+        </div>
+
+    </div>
+
+    <div style="height: 1000px;"></div>
+    {% include 'templates\footer.html' %}
+{% endblock %}

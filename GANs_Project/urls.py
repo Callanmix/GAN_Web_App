@@ -26,10 +26,14 @@ urlpatterns = [
     path('admin/', admin.site.urls), #admin page
     
     path("car_horse_gen/", views.car_horse_generator_view, name="CarHorse"), # Test of Car Horse Generator
-    path("upload_image/", views.image_upload_view, name="image_upload"), # Uploading Images to change
+    path("upload_image/", views.image_upload_view, name="image_upload"), #
+    path("upload_image_for_style_gan/", views.style_gan_image_upload_view, name="style_gan_upload"), 
+    path("change_image/<int:image_id>/<str:style>/", views.image_transformation_view, name="image_change"),
 
     path('signup/', views.signup), # signup page
     path("logout/", views.logout_request, name="logout"), # logout 
     path("login/", views.login_request, name="login"), # login
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    path("profile_page/", views.profile_page_view, name="profile_page"),
+    
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -1,0 +1,373 @@
+{% extends 'templates\base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+    <style>
+        .grow {
+            transition: all .2s ease-in-out;
+        }
+        .grow:hover {
+            transform: scale(1.1);
+        }
+        .row.display-flex {
+        display: flex;
+        flex-wrap: wrap;
+        }
+        .row.display-flex > [class*='col-'] {
+        flex-grow: 1;
+        }
+        input[data-readonly] {
+            pointer-events: none;
+        }
+    </style>
+
+    {% include 'templates\navbar.html' %}
+
+    <div style="height: 50px;"></div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-2 mr-auto" onclick="display_new_section('style_selection','picture_selection');">
+                <button id="first" type="button" class="btn btn-outline-secondary btn-block">Choose Style</button>
+            </div>
+            <div class="col-md-2 ml-auto" onclick="display_new_section('picture_selection','style_selection');">
+                <button id="second" type="button" class="btn btn-outline-secondary btn-block">Choose Image</button>
+            </div>
+        </div>
+
+
+        <!-- Style Selection Page -->
+        <div id="style_selection">
+            <h2 style="text-align: center;">Choose Output Style</h2>
+            <hr>
+            <div id="styles_options">
+                <div class="col-md-6">
+                    <button id="Photo_2_Monet" onclick="change_style(this.id); change_button_color(this.id);"
+                    type="button" class="btn btn-primary btn-block">Monet</button>
+                </div>
+                <br>
+                <div class="col-md-6">
+                    <button id="Photo_2_VanGogh" onclick="change_style(this.id); change_button_color(this.id);"
+                    type="button" class="btn btn-primary btn-block">Van Gogh</button>
+                </div>
+                <br>
+                <div class="col-md-6">
+                    <button id="Photo_2_Ukiyoe" onclick="change_style(this.id); change_button_color(this.id);"
+                    type="button" class="btn btn-primary btn-block">Ukiyoe</button>
+                </div>
+            </div> <br><br><br>
+            <div class="alert alert-warning alert-dismissible fade" role="alert" id='style_alert'>
+                <a href="#" class="close" aria-label="close" onclick="$('#style_alert').removeClass('show')">&times;</a>
+                <strong>Choose a Style</strong> You can not move on until you do!
+            </div>
+        </div>
+
+        <!-- Picture Selection Page -->
+        <div id="picture_selection" style="display: none;">
+            <h2 style="text-align: center;">Choose a Picture to Stylize</h2>
+            <hr>
+            <div class="alert alert-warning alert-dismissible fade" role="alert" id='image_alert'>
+                <a href="#" class="close" aria-label="close" onclick="$('#image_alert').removeClass('show')">&times;</a>
+                <strong>Choose a Picture</strong> You can not move on until you do!
+            </div>
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item active">
+                    <a class="nav-link active" data-toggle="tab" href="#menu2">Choose From Preset List</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#menu1">Upload New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#home">Choose From Your Own</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- Choose From Uploaded Images -->
+                <div id="home" class="tab-pane fade">
+                    {% if user.is_authenticated %}
+                        {% if images %}
+                            <br>
+                            <div class="container text-center" id='top' style="height: 500px;">
+                                <div class="row justify-content-md-center align-items-center">
+                                    <div class="col col-md-6">
+                                        <p>
+                                            <img src="" id="main_image"
+                                            width="500" height="500" 
+                                            class="img-fluid rounded shadow-lg p-4 mb-4">
+                                        </p>
+                                    </div>
+                                    <div class="col col-md-6">
+                                        <a id="submit_botton" onclick="validate_url(this.id); return false;"
+                                        data-style-choice="" data-image-id-choice="">
+                                            <button type="button"
+                                            class="btn btn-primary btn-lg">Upload Syle Gan Image</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="container text-center">
+                                <div class="row justify-content-md-center align-items-center display-flex">
+                                    {% for img in images reversed %}
+                                        {%  if forloop.counter|divisibleby:3 %} 
+                                                <div class="col-md-4">
+                                                    <div class="grow">
+                                                        <img src="{{ img.image.url }}" id="photo_id_{{ img.id }}"
+                                                        onclick="change_pic_id(this.id,'main_image')"
+                                                        class="img-fluid rounded shadow-lg p-4 mb-4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% if not forloop.last %} 
+                                                <div class="row justify-content-md-center align-items-center display-flex">
+                                            {% endif %}
+                                        {% else %} 
+                                            <div class="col-md-4">
+                                                <div class="grow">
+                                                    <img src="{{ img.image.url }}" id="photo_id_{{ img.id }}"
+                                                    onclick="change_pic_id(this.id,'main_image')"
+                                                    class="img-fluid rounded shadow-lg p-4 mb-4">
+                                                </div>
+                                            </div>
+                                            {% if forloop.last %}    
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}                                                                 
+                                    {% endfor %}
+                            </div>
+                        {% else %}
+                        <div style="height: 50px;"></div>
+                        <div class="row justify-content-md-center text-center">
+                            <div class="col">
+                                <h3>You Need to Upload Some Images First</h3>
+                                <h6>Just Click on the Next Tab Over</h6><br>
+                                <p>
+                                    Once there make sure you select <i>Do you want to save this image?</i>
+                                    <a onclick="$('#menu1').trigger('click');">Click here to go there</a>
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <!-- If user is not authenticated, show where to log in or sign up -->
+                        <div style="height: 50px;"></div>
+                        <div class="row justify-content-md-center text-center">
+                            <div class="col">
+                                <h3>You Need to Sign Up to See Your Uploaded Images</h3>
+                                <h6>Once you do you can save images and see them here.</h6><br>
+                                <p>
+                                    Its fast and free. 
+                                    <a href="/signup/">Click here to Sign Up!</a>
+                                </p>
+                                <p>
+                                    Are you cool and already have an account?
+                                    <a href="/login/">Click here to Sign In!</a>
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}     
+                </div>
+
+                <!-- Upload fresh image with option to save in db -->
+                <div id="menu1" class="tab-pane fade">
+                    {% if user.is_authenticated %}
+                        <br><br><br>
+                        <div class="row align-items-center">
+                            <div class="col-md-6 d-flex justify-content-around">
+                                <form id="image_upload" method="POST" action="" enctype='multipart/form-data'>
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+                                    <br>
+                                    <button class="btn btn-primary btn-block" type="submit">Upload Image</button>
+                                </form>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-around">
+                                <img id="output" src="#" width="256" height="256" class="img-fluid rounded shadow-lg p-4 mb-4 grow" alt=""/>
+                            </div>
+                        </div>
+                    {% else %}
+                    <!-- If user is not authenticated, show where to log in or sign up -->
+                        <div style="height: 50px;"></div>
+                        <div class="row justify-content-md-center text-center">
+                            <div class="col">
+                                <h3>You Need to Sign Up to Upload Your Own Images</h3>
+                                <h6>Once you do you can upload and save your own images.</h6><br>
+                                <p>
+                                    Its fast and free. 
+                                    <a href="/signup/">Click here to Sign Up!</a>
+                                </p>
+                                <p>
+                                    Are you cool and already have an account?
+                                    <a href="/login/">Click here to Sign In!</a>
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Have preset list of cool images to use and test with -->
+                <div id="menu2" class="tab-pane active in">
+                    <br>
+                    <div class="container text-center" style="height: 500px;">
+                        <div class="row justify-content-md-center align-items-center">
+                            <div class="col col-md-6">
+                                <p>
+                                    <img src="" id="main_image_preset"
+                                    width="500" height="500" 
+                                    class="img-fluid rounded shadow-lg p-4 mb-4">
+                                </p>
+                            </div>
+                            <div class="col col-md-6">
+                                <a id="submit_botton_preset" onclick="validate_url(this.id); return false;"
+                                data-style-choice="" data-image-id-choice="">
+                                    <button type="button"
+                                    class="btn btn-primary btn-lg">Upload Syle Gan Image</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="container text-center">
+                        {% if preset_images %}
+                            <div class="row justify-content-md-center align-items-center display-flex">
+                                {% for img in preset_images reversed %}
+                                    {%  if forloop.counter|divisibleby:3 %} 
+                                            <div class="col-md-4">
+                                                <div class="grow">
+                                                    <img src="{{ img.image.url }}" id="photo_id_preset_{{ img.id }}"
+                                                    onclick="change_pic_id(this.id, 'main_image_preset')"
+                                                    class="img-fluid rounded shadow-lg p-4 mb-4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if not forloop.last %} 
+                                            <div class="row justify-content-md-center align-items-center display-flex">
+                                        {% endif %}
+                                    {% else %} 
+                                        <div class="col-md-4">
+                                            <div class="grow">
+                                                <img src="{{ img.image.url }}" id="photo_id_preset_{{ img.id }}"
+                                                onclick="change_pic_id(this.id, 'main_image_preset')"
+                                                class="img-fluid rounded shadow-lg p-4 mb-4">
+                                            </div>
+                                        </div>
+                                        {% if forloop.last %}    
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}                                                                 
+                                {% endfor %}
+                        {% else %}
+                            <div class="row justify-content-md-center">
+                                <div class="col">
+                                    <h3>You Need to Upload An Image</h3>
+                                    <p>
+                                        You need to upload an image first! 
+                                        <a href="/upload_image/">Click here to go to
+                                        the image upload page.</a>
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div> 
+                </div>
+            
+            </div>
+        </div>
+    </div> 
+
+    <div style="height: 500px;"></div>
+
+    {% include 'templates\footer.html' %}
+
+    <script>       
+        $(document).ready(function(){
+            $('#style_text_input').on("cut copy paste",function(e) {
+                e.preventDefault();
+            }); 
+            $("#style_text_input").keydown(function(e){
+                e.preventDefault();
+            });
+        });
+
+        function change_pic_id(clicked_id, output_div) {
+            var image = document.getElementById(clicked_id);
+            var clicked_id = clicked_id.substring(clicked_id.lastIndexOf('_') + 1);
+            if (output_div=='main_image_preset') {
+                var is_preset = true;
+            } else {
+                var is_preset = false;
+            };
+            document.getElementById(output_div).src=image.src;
+            set_url(clicked_id, "id", is_preset);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function change_style (clicked_id) {
+            $('#style_text_input').val(clicked_id);
+            set_url(clicked_id, "style", false);
+        };
+
+        function set_url(new_element, where_to_put, is_preset) {
+            //figure out if preset or regular
+            if (is_preset==true) {
+                var output_button = '#submit_botton_preset';
+                var new_element = String(parseInt(new_element, 10) + 1000000000);
+            } else {
+                var output_button = '#submit_botton';
+            };
+            var data_image_id = $(output_button).data('imageIdChoice');
+            var data_style = $(output_button).data('styleChoice');
+
+            if (where_to_put == "style") {
+                $('#submit_botton_preset').data('styleChoice', new_element)
+                $('#submit_botton').data('styleChoice', new_element)
+            } else if (where_to_put == "id") {
+                $(output_button).data('imageIdChoice', new_element);
+            }
+            
+        };
+
+        function change_button_color (clicked_id) {
+            $("#styles_options :button").each(
+                function () {
+                    if ($(this).attr("id") == clicked_id) {
+                        $(this).removeClass("btn-primary");
+                        $(this).addClass("btn-secondary");
+                    } else {
+                        $(this).removeClass("btn-secondary");
+                        $(this).addClass("btn-primary");
+                    }
+                }
+            )
+        };
+
+        function display_new_section(shown, hidden) {
+            document.getElementById(shown).style.display='block';
+            document.getElementById(hidden).style.display='none';
+        };
+
+        function validate_url(clicked_id) {
+            var data_image_id = $("#" + clicked_id).data('imageIdChoice');
+            var data_style =    $("#" + clicked_id).data('styleChoice');
+
+            console.log(data_style, data_image_id);
+
+            if (data_style == "") {
+                $('#first').trigger('click');
+                $("#style_alert").addClass('show');
+                return false;
+            } else if (data_image_id == "") {
+                $("#image_alert").addClass('show');
+                return false;
+            }
+
+            var new_url = '/change_image/' + data_image_id + '/' + data_style;
+            window.location.replace(new_url);
+        };
+    </script>
+{% endblock %}

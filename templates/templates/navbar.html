@@ -6,33 +6,39 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item">
-        <a class="nav-link" href="/admin">Admin Page</a>
+        <a class="nav-link" href="/">PlaceHolder</a>
       </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
       {% if user.is_authenticated %}
-
-          <li class="nav-item">
-            <a class="nav-link">Hello, {{ user.username|title }}</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
-
-        {% else %}
-
-          <li class="nav-item">
-            <a class="nav-link" href="/signup">Sign Up</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>  
+        <li class="nav-item dropdown">
           
-        {% endif %}
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hello, {{ user.username|title }}
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="/profile_page">Personal Page</a>
+            {% if user.is_superuser %}
+              <a class="dropdown-item" href="/admin">Admin Page</a>
+            {% endif %}
+          </div>
+          
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/signup">Sign Up</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>  
+      {% endif %}
     </ul>
   </div>
 </nav>
