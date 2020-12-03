@@ -3,22 +3,43 @@
 
 {% block content %}
     {% include 'templates\navbar.html' %}
-    <div style="height: 150px;"></div>
+    <div style="height: 75px;"></div>
 
     <div class="container text-center">
+      <h1>Welcome</h1>
+      <div class="">
+        <h5>
+          This site is to help understand how a Generative Adversarial Networks functions and what they can do. Below are examples of different types of GANs. Click on one to interact with it and to learn more
+        </h5>
+      </div>
+    </div>
+    <div style="height: 75px;"></div>
+    <div class="container text-center">
         <div class="row d-flex justify-content-around">
-            <div class="col-lg-4">
-              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140">
-              <h2>Get Generated Car and Horse Pictures</h2>
-              <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-              <p><a class="btn btn-primary btn-block align-self-end" href="car_horse_gen/" role="button">Get Generated Car and Horse Pictures</a></p>
+
+            <div class="col-lg-5">
+              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
+              <h2>Original GANs</h2>
+              <p>Learn the basic concepts of a GAN implimented in the first generation of GAN creation. Take random numbers and output different images.</p>
             </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140">
-              <h2>Upload Syle Gan Image</h2>
-              <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-              <p><a class="btn btn-primary btn-block align-self-end" href="upload_image_for_style_gan/" role="button">Upload Syle Gan Image</a></p>
+
+            <div class="col-lg-5">
+              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
+              <h2>Syle GANs</h2>
+              <p>Double the GANs, double the fun! Style GANs attempt to transfer knowledge from one domain to another. Here we can use regular images and transform them into classic painting styles.</p>
             </div><!-- /.col-lg-4 -->
+
+          </div>
+          <div class="row d-flex justify-content-around">
+
+            <div class="col-lg-5">
+              <p><a class="btn btn-primary btn-block" href="car_horse_gen/" role="button">Generative Adversarial Networks</a></p>
+            </div><!-- /.col-lg-4 -->
+
+            <div class="col-lg-5">
+              <p><a class="btn btn-primary btn-block" href="upload_image_for_style_gan/" role="button">Style Transfer GANs</a></p>
+            </div><!-- /.col-lg-4 -->
+
           </div>
     </div>
 
