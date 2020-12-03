@@ -38,7 +38,7 @@ tensorboard-plugin-wit==1.7.0
 tensorflow==2.3.1
 tensorflow-estimator==2.3.0
 termcolor==1.1.0
-tflite-runtime @ https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-win_amd64.whl
+tflite-runtime @ https://github.com/google-coral/pycoral/releases/download/release-frogfish/tflite_runtime-2.5.0-cp37-cp37m-win_amd64.whl
 urllib3==1.25.11
 Werkzeug==1.0.1
 whitenoise==5.2.0
