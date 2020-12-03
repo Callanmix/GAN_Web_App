@@ -1,1 +1,1 @@
-web: gunicorn GANs_Project.wsgi --log-file -
+web: gunicorn GANs_Project.wsgi
