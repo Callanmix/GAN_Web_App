@@ -5,45 +5,111 @@
     {% include 'templates\navbar.html' %}
     <div style="height: 75px;"></div>
 
-    <div class="container text-center">
-      <h1>Welcome</h1>
-      <div class="">
-        <h5>
-          This site is to help understand how a Generative Adversarial Networks functions and what they can do. Below are examples of different types of GANs. Click on one to interact with it and to learn more
-        </h5>
+    <div class="container">
+      <div class="container">
+        <h2 class="text-center">What is a Generative Adversarial Network?</h2><br>
+        <p>
+            If you were given 1000 images, could you then make one new image that could fit into the original 1000? That is the basic theory behind GANs. Given a group of data, can we create a new instance that can fit into that group. This is done with neural networks that work together to find the distribution of the data. Once the distribution is known, it is "easy" to make a new point that falls in the distribution.
+        </p>
+        <p>
+            You can learn more about these concepts by reading my articles:
+        </p>
+        <ul>
+            <li>
+                <a href="https://callanmix.github.io/blog_posts/What_Are_GANs.html" target="blank_">Generative Adversarial Networks (GANs); What Are They And How Do They Work?</a>
+            </li>
+            <li>
+                <a href="https://callanmix.github.io/blog_posts/How_Do_GANs_Work.html" target="blank_">What Does a Generative Adversarial Network (GAN) Do?</a>
+            </li>
+        </ul>
+      </div>
+      <div>
+        <p>
+          Below we have two types of common generative networks Basic GAN and Cycle GAN. Click on them to explore my implimention of them.
+        </p>
       </div>
     </div>
     <div style="height: 75px;"></div>
-    <div class="container text-center">
-        <div class="row d-flex justify-content-around">
+    <div class="container">
+      <div class="row d-flex justify-content-around text-center">
 
-            <div class="col-lg-5">
-              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
-              <h2>Original GANs</h2>
-              <p>Learn the basic concepts of a GAN implimented in the first generation of GAN creation. Take random numbers and output different images.</p>
-            </div><!-- /.col-lg-4 -->
+        <div class="col-lg-5">
+          <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2020/11/26/07/43/wapiti-5778159_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
+          <h2>Original GANs</h2>
+          <p>Learn the basic concepts of a GAN implimented in the first generation of GAN creation. Take random numbers and output different images.</p>
+        </div><!-- /.col-lg-4 -->
 
-            <div class="col-lg-5">
-              <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
-              <h2>Syle GANs</h2>
-              <p>Double the GANs, double the fun! Style GANs attempt to transfer knowledge from one domain to another. Here we can use regular images and transform them into classic painting styles.</p>
-            </div><!-- /.col-lg-4 -->
+        <div class="col-lg-5">
+          <img class="rounded-circle" src="https://cdn.pixabay.com/photo/2016/03/09/20/32/image-1247354_960_720.jpg" alt="Generic placeholder image" width="140" height="140"><br><br>
+          <h2>Cycle GANs</h2>
+          <p>Double the GANs, double the fun! cycle GANs attempt to transfer knowledge from one domain to another. Here we can use regular images and transform them into classic painting styles.</p>
+        </div><!-- /.col-lg-4 -->
+      </div>
+      <div class="row d-flex justify-content-around">
+        <div class="col-lg-5">
+          <p><a class="btn btn-primary btn-block" href="basic_gans/" role="button">Simple Basic GANs</a></p>
+        </div><!-- /.col-lg-4 -->
 
-          </div>
-          <div class="row d-flex justify-content-around">
+        <div class="col-lg-5">
+          <p><a class="btn btn-primary btn-block" href="upload_image_for_style_gan/" role="button">Cycle Transfer GANs</a></p>
+        </div><!-- /.col-lg-4 -->
+      </div>
 
-            <div class="col-lg-5">
-              <p><a class="btn btn-primary btn-block" href="car_horse_gen/" role="button">Generative Adversarial Networks</a></p>
-            </div><!-- /.col-lg-4 -->
+      <br><br><br><br><br><br>
 
-            <div class="col-lg-5">
-              <p><a class="btn btn-primary btn-block" href="upload_image_for_style_gan/" role="button">Style Transfer GANs</a></p>
-            </div><!-- /.col-lg-4 -->
+      <div class="row d-flex justify-content-around">
 
-          </div>
+        <div class="col-lg-6">
+          <h2>How does a basic GAN work?</h2><br>
+          <span>
+              <h4>Latent Space</h4>
+              <p>
+                  This is the input to the GAN. It is really just a list of random numbers between 0-1 or -1-1. This space esentially gives the GAN blank space to pull from. Each of the numbers affect the output. For example, in image creation, one number could change the hair color, while another could change the overall hue. This list is given to the Generative Model. 
+              </p>
+          </span>
+          <span>
+              <h4>Generative Model</h4>
+              <p>
+                  When making new images, only the generative network is used from the GAN. This network has been trained on a specific set of data, and using the latent space, is able to create new content that matches the training data.
+              </p>
+          </span>
+          <span>
+              <h4>Output</h4>
+              <p>
+                  In the examples that I made, the output is a 32 x 32 array. This means a 1 X 100 list was transformed to create a new array of 32 x 32 numbers. We can then change those number to pixels and make an image.
+              </p>
+          </span>
+        </div><!-- /.col-lg-4 -->
+
+        <div class="col-lg-6">
+          <h2>How does a Cycle GAN work?</h2><br>
+          <span>
+              <h4>Two Sides</h4>
+              <p>
+                  The purpose of a cycle GAN is to transfer information from one area to another. In my examples, real images we converted to a specific painter's style. In a cycle GAN, there are really two GANs working together. One turns an image to look like a painting and the other turns paintings to look like images. The logic behind a this type of GAN is that an image should convert back to itself by running through both GANs. 
+              </p>
+              <p>
+                This is easy to comprehend when thinking about language translation. If you translate a sentance from Spanish to English, it should translate back to the same thing from English to Spanish. 
+              </p>
+          </span>
+          <span>
+              <h4>Choose One Generative Model</h4>
+              <p>
+                  In the examples above, only one of the two GANs is used; the one that made photos look like paintings. This is given an image from a user. The cycle GANs were trained on 256 x 256 images, so when an image is choosen, it is resized to that to be fed into the model. 
+              </p>
+          </span>
+          <span>
+              <h4>Output</h4>
+              <p>
+                  The output is a 256 x 256 image that has been transformed into the chosen style. 
+              </p>
+          </span>
+        </div><!-- /.col-lg-4 -->
+      </div>
+
     </div>
 
-    <div style="height: 750px;"></div>
+    <div style="height: 200px;"></div>
     {% include 'templates\footer.html' %}
 
 {% endblock %}

@@ -2,12 +2,43 @@
 {% load custom_tags %}
 
 {% block content %}
+    <style>
+        ol {
+            font-weight:bolder;
+            font-size: x-large;
+          }
+          ol li span {
+            font-weight: normal;
+            font-size: medium;
+          }
+    </style>
     {% include 'templates\navbar.html' %}
     <div style="height: 75px;"></div>
+    
+    <div class="text-center">
+        <h2>Choose a Basic GAN</h2>
+    </div>
+    <div style="height: 100px;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <p><a class="btn btn-primary btn-block" href="/basic_gan_output/dog_generator/" role="button">Dogs</a></p>
+            </div>
+            <div class="col text-center">
+                <p><a class="btn btn-primary btn-block" href="/basic_gan_output/deer_generator/" role="button">Deer</a></p>
+            </div>
+            <div class="col text-center">
+                <p><a class="btn btn-primary btn-block" href="/basic_gan_output/car_boat_plane_generator/" role="button">Car Boat Plane</a></p>
+            </div>
+            <div class="col text-center">
+                <p><a class="btn btn-primary btn-block" href="/basic_gan_output/car_horse_generator/" role="button">Car Horse</a></p>
+            </div>
+        </div>
+    </div>
 
+    
 
-
-    <div style="height: 750px;"></div>
+    <div style="height: 500px;"></div>
     {% include 'templates\footer.html' %}
 
 {% endblock %}

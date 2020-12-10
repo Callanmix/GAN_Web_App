@@ -24,8 +24,10 @@ from GANs_App import views
 urlpatterns = [
     path('', views.home_view, name='home'), # home page
     path('admin/', admin.site.urls), #admin page
-    
-    path("car_horse_gen/", views.car_horse_generator_view, name="CarHorse"), # Test of Car Horse Generator
+
+
+    path("basic_gans/", views.basic_gans, name="BasicGan"),
+    path("basic_gan_output/<str:style>/", views.basic_gan_output_view, name="basic_gan_output"), # Test of Car Horse Generator
     path("upload_image/", views.image_upload_view, name="image_upload"), #
     path("upload_image_for_style_gan/", views.style_gan_image_upload_view, name="style_gan_upload"), 
     path("change_image/<int:image_id>/<str:style>/", views.image_transformation_view, name="image_change"),

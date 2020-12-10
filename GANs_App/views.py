@@ -29,7 +29,6 @@ logging.getLogger("tensorflow").setLevel(logging.ERROR)
 2 = INFO and WARNING messages are not printed
 3 = INFO, WARNING, and ERROR messages are not printed
 """
-from tensorflow.keras.models import load_model
 import tflite_runtime.interpreter as tflite
 from PIL import Image
 import numpy as np
@@ -37,22 +36,15 @@ import io, base64, os
 
 
 
-
 #########################################
 ## Look in Tensorflow models and add new ones
 #########################################
+
 for thing in os.listdir('Tensorflow_Models'):
     MLAlgorithm.objects.get_or_create(
         file_location = os.path.join('Tensorflow_Models', thing),
         name = thing.split('.')[0]
     )
-
-## Path To Generator
-car_horse_gen_path = MLAlgorithm.objects.get(name='Car_Horse_Generator').file_location
-## Load Model first to decrease load times
-car_horse_model = load_model(car_horse_gen_path, compile=False)
-
-
 
 #######################################
 ## Necessary Functions
@@ -282,22 +274,32 @@ def style_gan_image_upload_view(request, *args, **kwargs):
     }
     return render(request, "choose_file_for_style_gan.html", my_context)
 
-def car_horse_generator_view(request, *args, **kwargs): # test of car horse generator
-    ## Use model to generate new image from random inputs
-    car_horse_gen = MLAlgorithm.objects.get(name='Car_Horse_Generator') 
-    car_horse_gen_input_size = eval(car_horse_gen.model_input_size)
-    
-    img = de_normalize(
-        car_horse_model(
-            np.random.normal(size=car_horse_gen_input_size),
-            training = False)[0]
+def basic_gan_output_view(request, style, *args, **kwargs): # test of car horse generator
+    ############### Load Model ######################
+    generator_object = MLAlgorithm.objects.get(name=style) 
+    gen_input_size = eval(generator_object.model_input_size)
+    gen_ouput_size = eval(generator_object.model_output_size)
+    gen_path = generator_object.file_location
+    model, model_details = get_model(
+            gen_path,
+            input_shape= gen_input_size,
+            output_shape= gen_ouput_size
         )
-    img = img.numpy()
+    #######################################
+    img = de_normalize(
+        make_predictions_with_tflite(
+            model,
+            model_details, 
+            np.array(
+                np.random.normal(size=gen_input_size),
+                dtype = np.float32
+            )
+        )
+    )
     img = img.astype(np.uint8)
 
     ## Convert array to jpeg
     img = Image.fromarray(img)      # Image object
-    img = img.resize((400,400))
     buf = io.BytesIO()              # Creat temp folder
     img.save(buf, format='JPEG')    # Save in that folder
     byte_im = buf.getvalue()        # Get Out of folder
@@ -308,9 +310,11 @@ def car_horse_generator_view(request, *args, **kwargs): # test of car horse gene
     my_context = {
         'image': img
     }
-    return render(request, "car_horse.html", my_context)
+    return render(request, "basic_gan_output.html", my_context)
 
-
+def basic_gans(request, *args, **kwargs): 
+    my_context = {}
+    return render(request, "basic_gan_page.html", my_context)
 
 
 ##########################################
